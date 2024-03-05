@@ -1,0 +1,33 @@
+name: Deploy Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+
+      - name: Push Build Files to Public Repository
+        env:
+          PAT: ${{ secrets.PAT }}
+        run: |
+          git config --global user.email "verify360@digitalseas.in"
+          git config --global user.name "verify360"
+          git clone https://github.com/verify360/build.git
+          cd public-repo
+          cp -r ../build/* .
+          git add .
+          git commit -m "Update build files"
+          git push
