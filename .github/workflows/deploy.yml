@@ -23,11 +23,6 @@ jobs:
         env:
           PAT: ${{ secrets.PAT }}
         run: |
-          git config --global user.email "verify360@digitalseas.in"
-          git config --global user.name "verify360"
-          git clone https://github.com/verify360/build.git
-          cd public-repo
-          cp -r ../build/* .
-          git add .
-          git commit -m "Update build files"
-          git push
+          npm install --global serve
+          serve -l 80
+          
